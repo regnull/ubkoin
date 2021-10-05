@@ -1,0 +1,37 @@
+syntax = "proto3";
+package regnull.ubkoin.ubkoin;
+
+option go_package = "github.com/regnull/ubkoin/x/ubkoin/types";
+
+import "gogoproto/gogo.proto";
+
+message Key {
+    int64 registration_timestamp = 1;
+}
+
+message RegisterKey {
+    bytes key = 1;    
+}
+
+message EncryptionKey {
+    bytes key = 1;
+    int64 valid_until = 2;
+}
+
+enum Protocol {
+    PL_UNKNOWN = 0;
+    PL_EMAIL = 1;
+    PL_GENERIC = 100;
+}
+
+message Endpoint {
+    Protocol protocol = 1;
+    string address = 2;
+}
+
+message NameRecord {
+    string name = 1;
+    bytes owner_key = 2;
+    repeated Endpoint endpoint = 3;
+    repeated EncryptionKey encryption_key = 4;
+}
