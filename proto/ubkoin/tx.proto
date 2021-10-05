@@ -1,0 +1,13 @@
+syntax = "proto3";
+package regnull.ubkoin.ubkoin;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/regnull/ubkoin/x/ubkoin/types";
+
+// Msg defines the Msg service.
+service Msg {
+    // this line is used by starport scaffolding # proto/tx/rpc
+}
+
+// this line is used by starport scaffolding # proto/tx/message
