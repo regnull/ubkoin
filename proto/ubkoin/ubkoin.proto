@@ -35,3 +35,8 @@ message NameRecord {
     repeated Endpoint endpoint = 3;
     repeated EncryptionKey encryption_key = 4;
 }
+
+message ReserveName {
+    string name = 1;
+    string owner_address = 2;
+}
