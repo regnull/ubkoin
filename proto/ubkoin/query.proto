@@ -4,12 +4,34 @@ package regnull.ubkoin.ubkoin;
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 // this line is used by starport scaffolding # 1
+import "ubkoin/ubkoin.proto";
 
 option go_package = "github.com/regnull/ubkoin/x/ubkoin/types";
 
 // Query defines the gRPC querier service.
 service Query {
     // this line is used by starport scaffolding # 2
+	rpc Name(QueryGetNameRequest) returns (QueryGetNameResponse) {
+		option (google.api.http).get = "/example/ubkoin/ubkoin/name/{name}";
+	}
+	rpc NameAll(QueryAllNameRequest) returns (QueryAllNameResponse) {
+		option (google.api.http).get = "/example/ubkoin/ubkoin/name";
+	}
 }
 
 // this line is used by starport scaffolding # 3
+
+message QueryGetNameRequest {
+    string name = 1;
+}
+
+message QueryGetNameResponse {
+    NameRecord record = 1;
+}
+
+message QueryAllNameRequest {
+}
+
+message QueryAllNameResponse {
+    repeated NameRecord record = 1;
+}
