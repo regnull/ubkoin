@@ -15,6 +15,8 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_ubkoin"
+
+	NameRecordKey = "name_record_"
 )
 
 func KeyPrefix(p string) []byte {

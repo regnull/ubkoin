@@ -29,13 +29,11 @@ func (msg *ReserveName) GetSigners() []sdk.AccAddress {
 	return []sdk.AccAddress{creator}
 }
 
-// GetSignBytes ...
 func (msg *ReserveName) GetSignBytes() []byte {
 	bz := ModuleCdc.MustMarshalJSON(msg)
 	return sdk.MustSortJSON(bz)
 }
 
-// ValidateBasic ...
 func (msg *ReserveName) ValidateBasic() error {
 	_, err := sdk.AccAddressFromBech32(msg.OwnerAddress)
 	if err != nil {
