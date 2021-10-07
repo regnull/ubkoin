@@ -40,6 +40,8 @@ function getStructure(template) {
 }
 const getDefaultState = () => {
     return {
+        Name: {},
+        NameAll: {},
         _Structure: {
             Key: getStructure(Key.fromPartial({})),
             RegisterKey: getStructure(RegisterKey.fromPartial({})),
@@ -70,6 +72,18 @@ export default {
         }
     },
     getters: {
+        getName: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.Name[JSON.stringify(params)] ?? {};
+        },
+        getNameAll: (state) => (params = { params: {} }) => {
+            if (!params.query) {
+                params.query = null;
+            }
+            return state.NameAll[JSON.stringify(params)] ?? {};
+        },
         getTypeStructure: (state) => (type) => {
             return state._Structure[type].fields;
         }
@@ -98,6 +112,36 @@ export default {
                     throw new SpVuexError('Subscriptions: ' + e.message);
                 }
             });
+        },
+        async QueryName({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryName(key.name)).data;
+                commit('QUERY', { query: 'Name', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryName', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getName']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryName', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
+        },
+        async QueryNameAll({ commit, rootGetters, getters }, { options: { subscribe, all } = { subscribe: false, all: false }, params: { ...key }, query = null }) {
+            try {
+                const queryClient = await initQueryClient(rootGetters);
+                let value = (await queryClient.queryNameAll(query)).data;
+                while (all && value.pagination && value.pagination.nextKey != null) {
+                    let next_values = (await queryClient.queryNameAll({ ...query, 'pagination.key': value.pagination.nextKey })).data;
+                    value = mergeResults(value, next_values);
+                }
+                commit('QUERY', { query: 'NameAll', key: { params: { ...key }, query }, value });
+                if (subscribe)
+                    commit('SUBSCRIBE', { action: 'QueryNameAll', payload: { options: { all }, params: { ...key }, query } });
+                return getters['getNameAll']({ params: { ...key }, query }) ?? {};
+            }
+            catch (e) {
+                throw new SpVuexError('QueryClient:QueryNameAll', 'API Node Unavailable. Could not perform query: ' + e.message);
+            }
         },
         async sendReserveName({ rootGetters }, { value, fee = [], memo = '' }) {
             try {

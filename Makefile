@@ -13,7 +13,7 @@ BUILD_FLAGS := -ldflags '$(ldflags)'
 all: install
 
 install: go.sum
-	@echo "--> Installing ubikoind"
+	@echo "--> Installing ubkoind"
 	@go install -mod=readonly $(BUILD_FLAGS) ./cmd/ubkoind
 
 go.sum: go.mod

@@ -8,6 +8,12 @@
  * ## SOURCE: https://github.com/acacode/swagger-typescript-api ##
  * ---------------------------------------------------------------
  */
+export var UbkoinProtocol;
+(function (UbkoinProtocol) {
+    UbkoinProtocol["PL_UNKNOWN"] = "PL_UNKNOWN";
+    UbkoinProtocol["PL_EMAIL"] = "PL_EMAIL";
+    UbkoinProtocol["PL_GENERIC"] = "PL_GENERIC";
+})(UbkoinProtocol || (UbkoinProtocol = {}));
 export var ContentType;
 (function (ContentType) {
     ContentType["Json"] = "application/json";
@@ -134,4 +140,35 @@ export class HttpClient {
  * @version version not set
  */
 export class Api extends HttpClient {
+    constructor() {
+        super(...arguments);
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryNameAll
+         * @request GET:/regnull/ubkoin/ubkoin/name
+         */
+        this.queryNameAll = (query, params = {}) => this.request({
+            path: `/regnull/ubkoin/ubkoin/name`,
+            method: "GET",
+            query: query,
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryName
+         * @summary this line is used by starport scaffolding # 2
+         * @request GET:/regnull/ubkoin/ubkoin/name/{name}
+         */
+        this.queryName = (name, params = {}) => this.request({
+            path: `/regnull/ubkoin/ubkoin/name/${name}`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
+    }
 }

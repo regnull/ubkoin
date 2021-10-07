@@ -12,10 +12,10 @@ option go_package = "github.com/regnull/ubkoin/x/ubkoin/types";
 service Query {
     // this line is used by starport scaffolding # 2
 	rpc Name(QueryGetNameRequest) returns (QueryGetNameResponse) {
-		option (google.api.http).get = "/example/ubkoin/ubkoin/name/{name}";
+		option (google.api.http).get = "/regnull/ubkoin/ubkoin/name/{name}";
 	}
 	rpc NameAll(QueryAllNameRequest) returns (QueryAllNameResponse) {
-		option (google.api.http).get = "/example/ubkoin/ubkoin/name";
+		option (google.api.http).get = "/regnull/ubkoin/ubkoin/name";
 	}
 }
 
@@ -30,8 +30,10 @@ message QueryGetNameResponse {
 }
 
 message QueryAllNameRequest {
+    cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
 
 message QueryAllNameResponse {
     repeated NameRecord record = 1;
+    cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }

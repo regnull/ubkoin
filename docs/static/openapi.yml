@@ -12501,6 +12501,219 @@ paths:
                         }
       tags:
         - Query
+  /regnull/ubkoin/ubkoin/name:
+    get:
+      operationId: RegnullUbkoinUbkoinNameAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              record:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    ownerKey:
+                      type: string
+                      format: byte
+                    endpoint:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          protocol:
+                            type: string
+                            enum:
+                              - PL_UNKNOWN
+                              - PL_EMAIL
+                              - PL_GENERIC
+                            default: PL_UNKNOWN
+                          address:
+                            type: string
+                    encryptionKey:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          key:
+                            type: string
+                            format: byte
+                          validUntil:
+                            type: string
+                            format: int64
+              pagination:
+                type: object
+                properties:
+                  nextKey:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.countTotal
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/regnull/ubkoin/ubkoin/name/{name}':
+    get:
+      summary: 'this line is used by starport scaffolding # 2'
+      operationId: RegnullUbkoinUbkoinName
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              record:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  ownerKey:
+                    type: string
+                    format: byte
+                  endpoint:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        protocol:
+                          type: string
+                          enum:
+                            - PL_UNKNOWN
+                            - PL_EMAIL
+                            - PL_GENERIC
+                          default: PL_UNKNOWN
+                        address:
+                          type: string
+                  encryptionKey:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        key:
+                          type: string
+                          format: byte
+                        validUntil:
+                          type: string
+                          format: int64
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: name
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
 definitions:
   cosmos.authz.v1beta1.Grant:
     type: object
@@ -19815,3 +20028,163 @@ definitions:
       and
 
       freezing clients
+  regnull.ubkoin.ubkoin.EncryptionKey:
+    type: object
+    properties:
+      key:
+        type: string
+        format: byte
+      validUntil:
+        type: string
+        format: int64
+  regnull.ubkoin.ubkoin.Endpoint:
+    type: object
+    properties:
+      protocol:
+        type: string
+        enum:
+          - PL_UNKNOWN
+          - PL_EMAIL
+          - PL_GENERIC
+        default: PL_UNKNOWN
+      address:
+        type: string
+  regnull.ubkoin.ubkoin.NameRecord:
+    type: object
+    properties:
+      name:
+        type: string
+      ownerKey:
+        type: string
+        format: byte
+      endpoint:
+        type: array
+        items:
+          type: object
+          properties:
+            protocol:
+              type: string
+              enum:
+                - PL_UNKNOWN
+                - PL_EMAIL
+                - PL_GENERIC
+              default: PL_UNKNOWN
+            address:
+              type: string
+      encryptionKey:
+        type: array
+        items:
+          type: object
+          properties:
+            key:
+              type: string
+              format: byte
+            validUntil:
+              type: string
+              format: int64
+  regnull.ubkoin.ubkoin.Protocol:
+    type: string
+    enum:
+      - PL_UNKNOWN
+      - PL_EMAIL
+      - PL_GENERIC
+    default: PL_UNKNOWN
+  regnull.ubkoin.ubkoin.QueryAllNameResponse:
+    type: object
+    properties:
+      record:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+            ownerKey:
+              type: string
+              format: byte
+            endpoint:
+              type: array
+              items:
+                type: object
+                properties:
+                  protocol:
+                    type: string
+                    enum:
+                      - PL_UNKNOWN
+                      - PL_EMAIL
+                      - PL_GENERIC
+                    default: PL_UNKNOWN
+                  address:
+                    type: string
+            encryptionKey:
+              type: array
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                    format: byte
+                  validUntil:
+                    type: string
+                    format: int64
+      pagination:
+        type: object
+        properties:
+          nextKey:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  regnull.ubkoin.ubkoin.QueryGetNameResponse:
+    type: object
+    properties:
+      record:
+        type: object
+        properties:
+          name:
+            type: string
+          ownerKey:
+            type: string
+            format: byte
+          endpoint:
+            type: array
+            items:
+              type: object
+              properties:
+                protocol:
+                  type: string
+                  enum:
+                    - PL_UNKNOWN
+                    - PL_EMAIL
+                    - PL_GENERIC
+                  default: PL_UNKNOWN
+                address:
+                  type: string
+          encryptionKey:
+            type: array
+            items:
+              type: object
+              properties:
+                key:
+                  type: string
+                  format: byte
+                validUntil:
+                  type: string
+                  format: int64
